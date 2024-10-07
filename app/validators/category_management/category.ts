@@ -8,3 +8,6 @@ export const createValidator = vine.compile(
     })
 )
 
+export const addCategoriesValidator = vine.compile(
+    vine.array(vine.number())
+)
