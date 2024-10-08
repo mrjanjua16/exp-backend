@@ -8,7 +8,7 @@ export class UserCategoriesService {
         if (!category_ids || category_ids.length === 0) {
             return { error: { status: 400, message: 'No categories provided!' } };
         }
-    
+
         // Validate the user
         const valid_user = await User.find(user_id);
         if (!valid_user) {
@@ -17,14 +17,14 @@ export class UserCategoriesService {
         if (valid_user.deleted_by !== null) {
             return { error: { status: 404, message: 'User is inactive, please contact administrator!' } };
         }
-    
+
         const validCategoryIds = [];
         const errorMessages = [];
-        
+
         // Get existing category IDs associated with the user
         const existingCategories = await valid_user.related('categories').query();
         const existingCategoryIds = existingCategories.map(category => category.id);
-        
+
         // Validate each category
         for (const category_id of category_ids) {
             const valid_category = await Category.find(category_id);
@@ -41,18 +41,18 @@ export class UserCategoriesService {
                 validCategoryIds.push(category_id); // Collect valid categories that are not already attached
             }
         }
-    
+
         // Attach the valid categories to the user
         if (validCategoryIds.length > 0) {
             await valid_user.related('categories').attach(validCategoryIds);
         }
-    
+
         return {
             message: 'User categories added successfully.',
             errors: errorMessages.length > 0 ? errorMessages : undefined, // Return errors if any
         };
     }
-    
+
 
 
     // Detach User All Categories

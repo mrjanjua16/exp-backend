@@ -6,6 +6,11 @@ export default class extends BaseSchema {
   async up() {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
+      table.integer('user_id')
+        .unsigned()
+        .references('id')
+        .inTable('users')
+        .notNullable()
       table.integer('category_id')
         .unsigned()
         .references('id')
@@ -14,7 +19,7 @@ export default class extends BaseSchema {
       table.integer('planned')
         .unsigned()
       table.integer('actual')
-        .unsigned()
+      table.string('month').notNullable()
 
       table.integer('created_by')
         .unsigned()

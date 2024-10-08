@@ -6,6 +6,9 @@ export default class Income extends BaseModel {
   declare id: number
 
   @column()
+  declare user_id: number
+
+  @column()
   declare category_id: number
 
   @column()
@@ -13,6 +16,9 @@ export default class Income extends BaseModel {
 
   @column()
   declare actual: number
+
+  @column()
+  declare month: string
 
   @column()
   declare created_by: number

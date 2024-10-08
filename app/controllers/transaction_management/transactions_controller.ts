@@ -6,8 +6,8 @@ export default class TransactionsController {
     async create({ request, auth, response }: HttpContext) {
         try {
             const valid_transaction = await request.validateUsing(createTransactionValidator);
-            const { amount, categoryId } = valid_transaction;
-            const transaction = await TransactionService.create(amount, categoryId, auth.user?.id || 1);
+            const { amount, categoryId, date } = valid_transaction;
+            const transaction = await TransactionService.create(amount, categoryId, date, auth.user?.id || 1);
             return transaction;
         } catch (error) {
             if (error.code === '23505') {
