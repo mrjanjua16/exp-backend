@@ -14,6 +14,7 @@ const AuthController = () => import('#controllers/auth_management/auth_controlle
 const CategoryController = () => import('#controllers/category_management/categories_controller')
 const UserCategoriesController = () => import('#controllers/category_management/user_categories_controller')
 const TransactionController = () => import('#controllers/transaction_management/transactions_controller')
+const LedgerController = () => import('#controllers/ledger_management/ledger_controller')
 
 router.group(() => { // /api
   router.group(() => { // /api/v1
@@ -25,7 +26,7 @@ router.group(() => { // /api
       router.get('/', [AuthController, 'me'])
       router.post('/logout', [AuthController, 'logout'])
     })
-    .prefix('auth')
+      .prefix('auth')
 
     // Category Management routes
     router.group(() => { // /api/v1/cat
@@ -34,18 +35,18 @@ router.group(() => { // /api
       router.patch('/:id', [CategoryController, 'update'])
       router.delete('/:id', [CategoryController, 'delete']) // Development use only
     })
-    .prefix('cat')
-    .use(middleware.auth({ guards: ['api'] }))
+      .prefix('cat')
+      .use(middleware.auth({ guards: ['api'] }))
 
     // User Categories Management Routes
-    router.group(()=>{
+    router.group(() => {
       router.get('/', [UserCategoriesController, 'list'])
       router.post('/', [UserCategoriesController, 'add'])
       router.delete('/', [UserCategoriesController, 'remove'])
       router.delete('/all', [UserCategoriesController, 'removeAll'])
     })
-    .prefix('user-cat')
-    .use(middleware.auth({ guards: ['api'] }))
+      .prefix('user-cat')
+      .use(middleware.auth({ guards: ['api'] }))
 
     // Transaction Management routes
     router.group(() => { // /api/v1/trn
@@ -53,11 +54,20 @@ router.group(() => { // /api
       router.get('/', [TransactionController, 'list'])
       router.delete('/:id', [TransactionController, 'delete']) // Development use only
     })
-    .prefix('trn')
-    .use(middleware.auth({ guards: ['api'] }))
+      .prefix('trn')
+      .use(middleware.auth({ guards: ['api'] }))
+
+    // Ledger Management routes
+    router.group(() => { // /api/v1/ldg
+      router.post('/', [LedgerController, 'addPlanned'])
+      router.post('/mnth', [LedgerController, 'listPerMonth'])
+      router.post('/cat', [LedgerController, 'listPerCategory'])
+    })
+      .prefix('ldg')
+      .use(middleware.auth({ guards: ['api'] }))
 
   })
-  .prefix('/v1')
+    .prefix('/v1')
 
 })
-.prefix('/api')
+  .prefix('/api')

@@ -30,10 +30,10 @@ export class TransactionService {
         let transactionAmount = amount;
 
         if (valid_category.type === category.EXPENSE) {
-            // put - sign to amount
             transactionAmount = -amount;
         }
 
+        // Add the transaction to accounts
         const addToAccounts = await AccountService.add(transactionAmount, date, userId);
 
         if (addToAccounts) {

@@ -1,3 +1,4 @@
+import { LedgerService } from '#services/ledger_management/ledger_service';
 import { TransactionService } from '#services/transaction_management/transaction_service';
 import { createTransactionValidator } from '#validators/transaction_management/transaction'
 import type { HttpContext } from '@adonisjs/core/http'
@@ -6,8 +7,13 @@ export default class TransactionsController {
     async create({ request, auth, response }: HttpContext) {
         try {
             const valid_transaction = await request.validateUsing(createTransactionValidator);
-            const { amount, categoryId, date } = valid_transaction;
-            const transaction = await TransactionService.create(amount, categoryId, date, auth.user?.id || 1);
+            const { amount, category_id, date } = valid_transaction;
+            const user_id = auth.user!.id;
+            const transaction = await TransactionService.create(amount, category_id, date, user_id);
+            const month = new Date(date).toISOString().slice(0,7);
+            const planned = 0;
+            const actual = amount;
+            await LedgerService.createLedger(month, category_id, planned, actual, user_id, user_id);
             return transaction;
         } catch (error) {
             if (error.code === '23505') {
