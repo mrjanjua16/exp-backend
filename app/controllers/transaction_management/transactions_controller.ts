@@ -10,10 +10,12 @@ export default class TransactionsController {
             const { amount, category_id, date } = valid_transaction;
             const user_id = auth.user!.id;
             const transaction = await TransactionService.create(amount, category_id, date, user_id);
-            const month = new Date(date).toISOString().slice(0,7);
-            const planned = 0;
-            const actual = amount;
-            await LedgerService.createLedger(month, category_id, planned, actual, user_id, user_id);
+            if (transaction) {
+                const month = new Date(date).toISOString().slice(0, 7);
+                const planned = 0;
+                const actual = amount;
+                await LedgerService.createLedger(month, category_id, planned, actual, user_id, user_id);
+            }
             return transaction;
         } catch (error) {
             if (error.code === '23505') {

@@ -35,7 +35,7 @@ router.group(() => { // /api
       router.patch('/:id', [CategoryController, 'update'])
       router.delete('/:id', [CategoryController, 'delete']) // Development use only
     })
-      .prefix('cat')
+      .prefix('category')
       .use(middleware.auth({ guards: ['api'] }))
 
     // User Categories Management Routes
@@ -45,25 +45,25 @@ router.group(() => { // /api
       router.delete('/', [UserCategoriesController, 'remove'])
       router.delete('/all', [UserCategoriesController, 'removeAll'])
     })
-      .prefix('user-cat')
+      .prefix('user-category')
       .use(middleware.auth({ guards: ['api'] }))
 
     // Transaction Management routes
     router.group(() => { // /api/v1/trn
       router.post('/', [TransactionController, 'create'])
       router.get('/', [TransactionController, 'list'])
-      router.delete('/:id', [TransactionController, 'delete']) // Development use only
+      router.delete('/:id', [TransactionController, 'delete'])
     })
-      .prefix('trn')
+      .prefix('transaction')
       .use(middleware.auth({ guards: ['api'] }))
 
     // Ledger Management routes
     router.group(() => { // /api/v1/ldg
       router.post('/', [LedgerController, 'addPlanned'])
-      router.post('/mnth', [LedgerController, 'listPerMonth'])
-      router.post('/cat', [LedgerController, 'listPerCategory'])
+      router.post('/month', [LedgerController, 'listPerMonth'])
+      router.post('/category', [LedgerController, 'listPerCategory'])
     })
-      .prefix('ldg')
+      .prefix('ledger')
       .use(middleware.auth({ guards: ['api'] }))
 
   })
