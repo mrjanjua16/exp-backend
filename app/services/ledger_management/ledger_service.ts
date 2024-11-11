@@ -50,12 +50,11 @@ export class LedgerService {
                 createdBy: undefined,
                 updatedBy: undefined,
                 deletedBy: undefined,
-                createdAt: undefined,
                 updatedAt: undefined,
                 deletedAt: undefined,
             };
         }));
-        return ledger_details.filter(Boolean); // Filter out null values
+        return ledger_details.filter(Boolean);
 
     }
 

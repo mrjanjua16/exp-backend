@@ -16,20 +16,20 @@ const UserCategoriesController = () => import('#controllers/category_management/
 const TransactionController = () => import('#controllers/transaction_management/transactions_controller')
 const LedgerController = () => import('#controllers/ledger_management/ledger_controller')
 
-router.group(() => { // /api
-  router.group(() => { // /api/v1
+router.group(() => {
+  router.group(() => {
 
     // Auth Management routes
-    router.group(() => { // /api/v1/auth
+    router.group(() => {
       router.post('/signup', [AuthController, 'signup'])
       router.post('/login', [AuthController, 'login'])
-      router.get('/', [AuthController, 'me'])
-      router.post('/logout', [AuthController, 'logout'])
+      router.get('/', [AuthController, 'me']).use(middleware.auth({ guards: ['api'] }))
+      router.post('/logout', [AuthController, 'logout']).use(middleware.auth({ guards: ['api'] }))
     })
       .prefix('auth')
 
     // Category Management routes
-    router.group(() => { // /api/v1/cat
+    router.group(() => {
       router.post('/', [CategoryController, 'create'])
       router.get('/', [CategoryController, 'list'])
       router.patch('/:id', [CategoryController, 'update'])
@@ -49,10 +49,10 @@ router.group(() => { // /api
       .use(middleware.auth({ guards: ['api'] }))
 
     // Transaction Management routes
-    router.group(() => { // /api/v1/trn
-      router.post('/', [TransactionController, 'create'])
+    router.group(() => {
+      router.post('/', [TransactionController, 'store'])
       router.get('/', [TransactionController, 'list'])
-      router.delete('/:id', [TransactionController, 'delete'])
+      router.delete('/:id', [TransactionController, 'destory'])
     })
       .prefix('transaction')
       .use(middleware.auth({ guards: ['api'] }))

@@ -4,7 +4,7 @@ import { createTransactionValidator } from '#validators/transaction_management/t
 import type { HttpContext } from '@adonisjs/core/http'
 
 export default class TransactionsController {
-    async create({ request, auth, response }: HttpContext) {
+    async store({ request, auth, response }: HttpContext) {
         try {
             const valid_transaction = await request.validateUsing(createTransactionValidator);
             const { amount, category_id, date } = valid_transaction;
@@ -50,7 +50,7 @@ export default class TransactionsController {
 
     }
 
-    async delete({ params, auth, response }: HttpContext) {
+    async destory({ params, auth, response }: HttpContext) {
         try {
             if (auth.user) {
                 const deleted_transaction = await TransactionService.delete(params.id, auth.user.id);

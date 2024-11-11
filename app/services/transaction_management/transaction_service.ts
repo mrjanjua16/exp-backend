@@ -6,7 +6,7 @@ import { DateTime } from "luxon";
 import { category } from "../../constants/enum.js";
 
 export class TransactionService {
-    static async create(amount: number, categoryId: number, date: string, userId: number) {
+    static async create(amount: number, categoryId: number, date: number, userId: number) {
         // Validate the category
         const valid_category = await Category.find(categoryId);
         if (!valid_category) {
@@ -41,6 +41,7 @@ export class TransactionService {
             const transaction = await Transaction.create({
                 user_id: userId,
                 amount: amount,
+                date: date,
                 category_id: categoryId,
                 created_by: userId,
             });
@@ -64,15 +65,26 @@ export class TransactionService {
                 if (category) {
                     return {
                         ...transaction.serializeAttributes(),
-                        category_name: category.name,
-                        category_type: category.type,
+                        categoryName: category.name,
+                        categoryType: category.type,
+                        createdBy: undefined,
+                        updatedBy: undefined,
+                        deletedBy: undefined,
+                        updatedAt: undefined,
+                        deletedAt: undefined,
 
                     };
                 } else {
                     return {
                         ...transaction.serializeAttributes(),
-                        category_name: 'Unknown',
-                        category_type: 'Unknown',
+                        categoryName: ' ',
+                        categoryType: ' ',
+                        createdBy: undefined,
+                        updatedBy: undefined,
+                        deletedBy: undefined,
+                        createdAt: undefined,
+                        updatedAt: undefined,
+                        deletedAt: undefined,
                     };
                 }
             }));

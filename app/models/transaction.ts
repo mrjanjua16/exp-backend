@@ -15,6 +15,9 @@ export default class Transaction extends BaseModel {
   declare category_id: number
 
   @column()
+  declare date: number
+
+  @column()
   declare created_by: number
 
   @column()

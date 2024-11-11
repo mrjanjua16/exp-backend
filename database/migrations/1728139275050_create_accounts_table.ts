@@ -12,7 +12,9 @@ export default class extends BaseSchema {
         .inTable('users')
         .notNullable()
       table.integer('balance')
-      table.string('date').notNullable()
+      table.integer('date')
+        .unsigned()
+        .notNullable()
 
       table.integer('created_by')
         .unsigned()
