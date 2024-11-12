@@ -12,62 +12,71 @@ import { middleware } from './kernel.js'
 
 const AuthController = () => import('#controllers/auth_management/auth_controller')
 const CategoryController = () => import('#controllers/category_management/categories_controller')
-const UserCategoriesController = () => import('#controllers/category_management/user_categories_controller')
-const TransactionController = () => import('#controllers/transaction_management/transactions_controller')
+const UserCategoriesController = () =>
+  import('#controllers/category_management/user_categories_controller')
+const TransactionController = () =>
+  import('#controllers/transaction_management/transactions_controller')
 const LedgerController = () => import('#controllers/ledger_management/ledger_controller')
 
-router.group(() => {
-  router.group(() => {
+router
+  .group(() => {
+    router
+      .group(() => {
+        // Auth Management routes
+        router
+          .group(() => {
+            router.post('/signup', [AuthController, 'signup'])
+            router.post('/login', [AuthController, 'login'])
+            router.get('/', [AuthController, 'me']).use(middleware.auth({ guards: ['api'] }))
+            router
+              .post('/logout', [AuthController, 'logout'])
+              .use(middleware.auth({ guards: ['api'] }))
+          })
+          .prefix('auth')
 
-    // Auth Management routes
-    router.group(() => {
-      router.post('/signup', [AuthController, 'signup'])
-      router.post('/login', [AuthController, 'login'])
-      router.get('/', [AuthController, 'me']).use(middleware.auth({ guards: ['api'] }))
-      router.post('/logout', [AuthController, 'logout']).use(middleware.auth({ guards: ['api'] }))
-    })
-      .prefix('auth')
+        // Category Management routes
+        router
+          .group(() => {
+            router.post('/', [CategoryController, 'create'])
+            router.get('/', [CategoryController, 'list'])
+            router.patch('/:id', [CategoryController, 'update'])
+            router.delete('/:id', [CategoryController, 'delete']) // Development use only
+          })
+          .prefix('category')
+          .use(middleware.auth({ guards: ['api'] }))
 
-    // Category Management routes
-    router.group(() => {
-      router.post('/', [CategoryController, 'create'])
-      router.get('/', [CategoryController, 'list'])
-      router.patch('/:id', [CategoryController, 'update'])
-      router.delete('/:id', [CategoryController, 'delete']) // Development use only
-    })
-      .prefix('category')
-      .use(middleware.auth({ guards: ['api'] }))
+        // User Categories Management Routes
+        router
+          .group(() => {
+            router.get('/', [UserCategoriesController, 'list'])
+            router.post('/', [UserCategoriesController, 'add'])
+            router.delete('/', [UserCategoriesController, 'remove'])
+            router.delete('/all', [UserCategoriesController, 'removeAll'])
+          })
+          .prefix('user-category')
+          .use(middleware.auth({ guards: ['api'] }))
 
-    // User Categories Management Routes
-    router.group(() => {
-      router.get('/', [UserCategoriesController, 'list'])
-      router.post('/', [UserCategoriesController, 'add'])
-      router.delete('/', [UserCategoriesController, 'remove'])
-      router.delete('/all', [UserCategoriesController, 'removeAll'])
-    })
-      .prefix('user-category')
-      .use(middleware.auth({ guards: ['api'] }))
+        // Transaction Management routes
+        router
+          .group(() => {
+            router.post('/', [TransactionController, 'store'])
+            router.get('/', [TransactionController, 'list'])
+            router.delete('/:id', [TransactionController, 'destory'])
+          })
+          .prefix('transaction')
+          .use(middleware.auth({ guards: ['api'] }))
 
-    // Transaction Management routes
-    router.group(() => {
-      router.post('/', [TransactionController, 'store'])
-      router.get('/', [TransactionController, 'list'])
-      router.delete('/:id', [TransactionController, 'destory'])
-    })
-      .prefix('transaction')
-      .use(middleware.auth({ guards: ['api'] }))
-
-    // Ledger Management routes
-    router.group(() => { // /api/v1/ldg
-      router.post('/', [LedgerController, 'addPlanned'])
-      router.post('/month', [LedgerController, 'listPerMonth'])
-      router.post('/category', [LedgerController, 'listPerCategory'])
-    })
-      .prefix('ledger')
-      .use(middleware.auth({ guards: ['api'] }))
-
+        // Ledger Management routes
+        router
+          .group(() => {
+            // /api/v1/ldg
+            router.post('/', [LedgerController, 'addPlanned'])
+            router.post('/month', [LedgerController, 'listPerMonth'])
+            router.post('/category', [LedgerController, 'listPerCategory'])
+          })
+          .prefix('ledger')
+          .use(middleware.auth({ guards: ['api'] }))
+      })
+      .prefix('/v1')
   })
-    .prefix('/v1')
-
-})
   .prefix('/api')

@@ -35,7 +35,7 @@ export default class Category extends BaseModel {
   @manyToMany(() => User, {
     pivotTable: 'user_categories',
     pivotForeignKey: 'category_id',
-    pivotRelatedForeignKey: 'user_id'
+    pivotRelatedForeignKey: 'user_id',
   })
   declare users: ManyToMany<typeof User>
 }

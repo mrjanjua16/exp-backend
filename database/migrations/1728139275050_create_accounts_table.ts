@@ -6,29 +6,26 @@ export default class extends BaseSchema {
   async up() {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
-      table.integer('user_id')
-        .unsigned()
-        .references('id')
-        .inTable('users')
-        .notNullable()
+      table.integer('user_id').unsigned().references('id').inTable('users').notNullable()
       table.integer('balance')
-      table.integer('date')
-        .unsigned()
-        .notNullable()
+      table.integer('date').unsigned().notNullable()
 
-      table.integer('created_by')
+      table
+        .integer('created_by')
         .unsigned()
         .references('id')
         .inTable('users')
         .onDelete('cascade')
         .notNullable()
-      table.integer('updated_by')
+      table
+        .integer('updated_by')
         .unsigned()
         .references('id')
         .inTable('users')
         .onDelete('cascade')
         .nullable()
-      table.integer('deleted_by')
+      table
+        .integer('deleted_by')
         .unsigned()
         .references('id')
         .inTable('users')

@@ -7,24 +7,19 @@ export default class extends BaseSchema {
   async up() {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
-      table.string('name')
-        .notNullable()
-        .unique()
-      table.enum('type', Object.values(category))
-        .notNullable()
+      table.string('name').notNullable().unique()
+      table.enum('type', Object.values(category)).notNullable()
 
-      table.integer('created_by')
+      table
+        .integer('created_by')
         .unsigned()
         .references('id')
         .inTable('users')
         .onDelete('cascade')
         .notNullable()
-      table.integer('updated_by')
-        .unsigned()
-        .references('id')
-        .inTable('users')
-        .onDelete('cascade')
-      table.integer('deleted_by')
+      table.integer('updated_by').unsigned().references('id').inTable('users').onDelete('cascade')
+      table
+        .integer('deleted_by')
         .unsigned()
         .references('id')
         .inTable('users')

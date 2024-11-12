@@ -7,88 +7,88 @@ export default class extends BaseSeeder {
     // Initial categories
     const categories = [
       {
-        name: "Rent",
+        name: 'Rent',
         type: category.EXPENSE,
         created_by: 1,
       },
       {
-        name: "Groceries",
+        name: 'Groceries',
         type: category.EXPENSE,
         created_by: 1,
       },
       {
-        name: "Salary",
+        name: 'Salary',
         type: category.INCOME,
         created_by: 1,
       },
       {
-        name: "Side Hustel",
+        name: 'Side Hustel',
         type: category.INCOME,
         created_by: 1,
       },
       {
-        name: "Utilities",
+        name: 'Utilities',
         type: category.EXPENSE,
         created_by: 1,
       },
       {
-        name: "Entertainment",
+        name: 'Entertainment',
         type: category.EXPENSE,
         created_by: 1,
       },
       {
-        name: "Healthcare",
+        name: 'Healthcare',
         type: category.EXPENSE,
         created_by: 1,
       },
       {
-        name: "Investment",
+        name: 'Investment',
         type: category.EXPENSE,
         created_by: 1,
       },
       {
-        name: "Education",
+        name: 'Education',
         type: category.EXPENSE,
         created_by: 1,
       },
       {
-        name: "Transportation",
+        name: 'Transportation',
         type: category.EXPENSE,
         created_by: 1,
       },
       {
-        name: "Insurance",
+        name: 'Insurance',
         type: category.EXPENSE,
         created_by: 1,
       },
       {
-        name: "Taxes",
+        name: 'Taxes',
         type: category.EXPENSE,
         created_by: 1,
       },
       {
-        name: "Savings",
+        name: 'Savings',
         type: category.INCOME,
         created_by: 1,
       },
       {
-        name: "ROI",
+        name: 'ROI',
         type: category.INCOME,
         created_by: 1,
       },
       {
-        name: "Other",
+        name: 'Other',
         type: category.EXPENSE,
         created_by: 1,
       },
-    ];
+    ]
 
     // Check for duplicate names
-    const uniqueNames = [...new Set(categories.map(category => category.name))];
+    const uniqueNames = [...new Set(categories.map((category) => category.name))]
     if (categories.length !== uniqueNames.length) {
-      throw new Error('Duplicate category names found');
+      throw new Error('Duplicate category names found')
     }
 
-    await Category.updateOrCreateMany('name', categories);
+    await Category.updateOrCreateMany('name', categories)
   }
 }
