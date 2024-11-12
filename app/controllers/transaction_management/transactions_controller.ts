@@ -36,6 +36,7 @@ export default class TransactionsController {
     try {
       if (auth.user) {
         const transaction = await TransactionService.delete(params.id, auth.user.id)
+
         return response.ok(transaction)
       } else {
         return response.badRequest('User does not exist.')

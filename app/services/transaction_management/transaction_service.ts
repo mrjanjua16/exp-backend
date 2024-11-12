@@ -5,9 +5,14 @@ import { AccountService } from '#services/account_management/account_service'
 import { DateTime } from 'luxon'
 import { category } from '../../constants/enum.js'
 
+interface transactionType {
+  amount?: number
+  category_id?: number
+  date?: string
+}
+
 export class TransactionService {
-  static async create(amount: number, categoryId: number, date: number, userId: number) {
-    // Validate the category
+  static async create(amount: number, categoryId: number, date: string, userId: number) {
     const valid_category = await Category.find(categoryId)
     if (!valid_category) {
       return {
@@ -15,7 +20,6 @@ export class TransactionService {
       }
     }
 
-    // Check if the category is already attached to the user
     const valid_user = await User.find(userId)
     if (!valid_user) {
       return { error: { status: 404, message: 'User not found!' } }
@@ -24,22 +28,18 @@ export class TransactionService {
     const existingCategories = await valid_user.related('categories').query()
     const existingCategoryIds = existingCategories.map((cat) => cat.id)
 
-    // If the category is not attached to the user, attach it
     if (!existingCategoryIds.includes(categoryId)) {
       await valid_user.related('categories').attach([categoryId])
     }
 
     let transactionAmount = amount
-
     if (valid_category.type === category.EXPENSE) {
       transactionAmount = -amount
     }
 
-    // Add the transaction to accounts
     const addToAccounts = await AccountService.add(transactionAmount, date, userId)
 
     if (addToAccounts) {
-      // Create the transaction
       const transaction = await Transaction.create({
         user_id: userId,
         amount: amount,

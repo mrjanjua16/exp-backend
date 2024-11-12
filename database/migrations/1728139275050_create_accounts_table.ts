@@ -8,7 +8,7 @@ export default class extends BaseSchema {
       table.increments('id')
       table.integer('user_id').unsigned().references('id').inTable('users').notNullable()
       table.integer('balance')
-      table.integer('date').unsigned().notNullable()
+      table.string('date').notNullable()
 
       table
         .integer('created_by')

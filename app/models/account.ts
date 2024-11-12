@@ -12,7 +12,7 @@ export default class Account extends BaseModel {
   declare balance: number
 
   @column()
-  declare date: number
+  declare date: string
 
   @column()
   declare created_by: number

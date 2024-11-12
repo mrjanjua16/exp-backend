@@ -1,7 +1,7 @@
 import Account from '#models/account'
 
 export class AccountService {
-  static async add(amount: number, date: number, userId: number) {
+  static async add(amount: number, date: string, userId: number) {
     const account = await Account.query().where('user_id', userId).andWhere('date', date).first()
     if (!account) {
       await Account.create({

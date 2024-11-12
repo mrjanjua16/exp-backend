@@ -9,7 +9,7 @@ export default class extends BaseSchema {
       table.integer('user_id').unsigned().references('id').inTable('users').notNullable()
       table.integer('amount').unsigned().notNullable()
       table.integer('category_id').unsigned().references('id').inTable('categories').notNullable()
-      table.integer('date').unsigned().notNullable()
+      table.string('date').notNullable()
       table
         .integer('created_by')
         .unsigned()
